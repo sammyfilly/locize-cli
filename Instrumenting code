@@ -1,0 +1,143 @@
+
+Instrumenting your code
+locizify
+Zero effort - drop one line of code.
+Using our locizify script is the simplest way to get your website or webapplication translated. We highly recommend using it on your static site generators like wordpress, shopify, ...
+
+Drop one line of code:
+<script
+    id="locizify" projectid="[PROJECT_ID]"
+    apikey="[API_KEY]" referencelng="[LNG]"
+    fallbacklng="[LNG]" saveMissing="true"
+    src="https://unpkg.com/locizify@^5.0.5"
+></script>
+You can find your projectId and API Key in your projects settings. (You should not expose your write API key into production - only use it during development)
+Reload your page and see the phrases ready to translate in your locize project.
+Find more details and configuration options on the github page.
+
+​https://youtu.be/f0ukRI0LMfo?t=180​
+i18next
+Best translation management for i18next.
+You can use locize in combination with i18next. I18next is a well known internationalization framework and offers a wide range of framework integrations and plugins for almost every need.
+
+​Learn more about i18next​
+
+​Here you'll find a simple tutorial on how to best use react-i18next.
+Some basics of i18next and some cool possibilities on how to optimize your localization workflow.
+​​​​
+To connect i18next with the locize service integrate the i18next-locize-backend:
+import i18next from 'i18next';
+import Backend from 'i18next-locize-backend';
+​
+i18next
+  .use(Backend)
+  .init({
+    // ...other options
+    backend: {
+      projectId: '[PROJECT_ID]',
+      apiKey: '[API_KEY]',
+      referenceLng: '[LNG]'
+    }
+  });
+(You should not expose your write API key into production - only use it during development)
+​Here you can find a step by step react tutorial.​
+Other i18next tutorials:
+​Here you'll find a simple Angular tutorial on how to best use angular-i18next.
+​​​​
+Are you still using i18next in jQuery? Check out this tutorial blog post.
+​​​​
+Are you using Next.js?
+Here you can find an example with different approaches and a blog post explaining this.
+​​
+​
+
+Using Next.js 13 with the new app directory?
+Then this article is what you are looking for.
+​​
+​​
+Are you using Gatsby?
+Here you can find an example and an appropriate blog post.
+​​
+​​
+Are you using Remix?
+Here you can find a simple example and a step by step tutorial.
+​​
+​​
+Are you using Vue.js?
+Here you can find a simple example and a step by step tutorial.
+​​
+​​
+other options
+client side: polyglot, formatjs, react-intl, vue-i18n, js-lingui, messageformat, ...
+For server side rendering (SSR) or serverless usage, we do not suggest to use our locizer script. Because of this we suggest to download the translations in your CI/CD pipeline (via cli or via api) and package them with your application. Like described here.
+On client side, you can use our locizer script to load translations from locize and add them to your i18n framework in the browser:
+Sample for polyglot:
+// <script src="https://unpkg.com/locizer/locizer.min.js"></script>
+locizer
+  .init({
+    fallbackLng: 'en',
+    referenceLng: 'en',
+    projectId: '[your project id]'
+  })
+  .load('translation', function(err, translations, lng) {
+    const polyglot = new Polyglot({ phrases: translations, locale: lng });
+    console.log(polyglot.t('some key'));
+  });
+Sample for vue-i18n (Vue v3):
+import { createI18n } from 'vue-i18n'
+import locizer from 'locizer'
+​
+locizer.init({
+  projectId: 'project-id'
+});
+​
+export const i18n = createI18n({
+  locale: locizer.lng, // set locale
+  fallbackLocale: 'en' // set fallback locale
+  // If you need to specify other options, you can set other options
+  // ...
+});
+​
+// called from within setup hook in App.vue
+export const loadMessagesPromise = new Promise((resolve, reject) => {
+  locizer.loadAll('messages', (err, messages) => {
+    if (err) return reject(err);
+    Object.keys(messages).forEach((l) => {
+      i18n.global.setLocaleMessage(l, messages[l])
+    });
+    resolve(messages);
+  });
+})
+The full example can be found here.
+​Here you'll find a simple tutorial on how to best use vue-i18n.
+Some basics of vue-i18n and some cool possibilities on how to optimize your localization workflow.
+​​​ 
+For more details checkout locizer docs.
+Our samples:
+​react-intl​
+​vue-i18n​
+​svelte-i18n​
+​formatjs​
+​polyglot​
+​js-lingui​
+​ngx-translate​
+​transloco​
+3rd party modules
+​react-intl-namespaces Integrations of react-intl internationalization library with locize.com online translation service. Comes with support for namespaces, incontext editor, ...
+serverside
+Did you know internationalization is also important on your app's backend? In this tutorial blog post you can check out how this works.
+​​ ​
+For JavaScript environments please watch out for the i18next integration options and plugins.
+On other environments you could use:
+​Our API​
+​Our locize-cli​
+other formats xliff, gettext, ...
+You can use following modules to convert between formats:
+​xliff​
+​android-string-resource​
+​gettext (.mo/.po)​
+Simplest is to use those in combination with our cli to build an automated production pipeline powered by grunt, gulp, npm script, ...
+Previous
+Add content
+Next - Integration
+API
